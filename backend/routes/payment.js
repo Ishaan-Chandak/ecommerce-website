@@ -6,8 +6,8 @@ import 'dotenv/config';
 const router = express.Router();
 
 const razorpayInstance = new Razorpay({
-    key_id: "rzp_test_F2JLfZCsE7MDUw",
-    key_secret: "MW2RrLGry8juV1MH0JSnbzOH"
+    key_id: "key-id",
+    key_secret: "key-secret"
 });
 
 router.get('/get-payment', (req, res) => {
@@ -44,21 +44,13 @@ router.post('/verify', async (req, res) => {
         const sign = razorpay_order_id + "|" + razorpay_payment_id;
         console.log("sign " + sign);
         
-        const expectedSign = crypto.createHmac("sha256", "MW2RrLGry8juV1MH0JSnbzOH")
+        const expectedSign = crypto.createHmac("sha256", "key-secret")
             .update(sign.toString())
             .digest("hex");
         console.log("expected sign " + expectedSign);
         const isAuthentic = expectedSign === razorpay_signature;
         console.log("razorpay_signature " + razorpay_signature);
         if (isAuthentic) {
-            // const payment = new Payment({
-            //     razorpay_order_id,
-            //     razorpay_payment_id,
-            //     razorpay_signature
-            // });
-
-            // await payment.save();
-
             res.json({
                 message: "Payment Successfull"
             });
